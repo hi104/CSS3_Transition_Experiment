@@ -1,0 +1,175 @@
+ <html>
+   <head>
+     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	 <meta name="description" content="CSS3 Transition Experiment Tool" /><meta>
+	 <title>CSS3 Transition Experiment</title>
+     <link type="text/css" rel="stylesheet" href="stylesheets/bootstrap.css" />
+     <link type="text/css" rel="stylesheet" href="stylesheets/style.css" />
+     <link type="text/css" rel="stylesheet" href="stylesheets/ui-lightness/jquery-ui-1.8.17.custom.css" />
+
+     <script type="text/javascript" src="javascripts/lib/jquery-1.7.1.min.js"></script>
+     <script type="text/javascript" src="javascripts/lib/jquery.ui.core.js"></script>
+     <script type="text/javascript" src="javascripts/lib/jquery.ui.widget.js"></script>
+     <script type="text/javascript" src="javascripts/lib/jquery.ui.mouse.js"></script>
+     <script type="text/javascript" src="javascripts/lib/jquery.ui.slider.js"></script>
+     <script type="text/javascript" src="javascripts/lib/jquery.ui.selectable.js"></script>
+     <script type="text/javascript" src="javascripts/lib/jquery.ui.resizable.js"></script>
+
+     <script type="text/javascript">
+       var exports = {};
+     </script>
+     <script type="text/javascript" src="javascripts/underscore.js"></script>
+     <script type="text/javascript">
+       var _  = exports._;
+     </script>
+     <script type="text/javascript" src="javascripts/util.js"></script>
+     <script type="text/javascript" src="javascripts/element_property.js"></script>
+     <script type="text/javascript" src="javascripts/editor.js"></script>
+
+     <style id="animate-style" >
+       <!-- generate use javascript-->       
+     </style>
+   </head>
+
+   <body>
+      <div class="navbar navbar-fixed-top">
+       <div class="navbar-inner">
+         <div class="container-fluid">
+           <a class="brand" href="#">CSS3 Transition Experiment</a>
+           <div class="nav-collapse">
+             <ul class="nav">
+             </ul>
+           </div><!--/.nav-collapse -->
+         </div>
+       </div>
+     </div>
+
+     <div class="" style="margin-top:50px;margin-left:20px">
+       <div class="content">
+         <div class="row">
+           <div class="span5">
+             <form class="well"> 
+               <div class="span2">
+                 <h3>in</h3>
+                 <div class="select">
+                   <label>rotate(deg)</label>
+                   <select id="rotate2"  class="select-rotate">
+                   </select>
+
+                   <label>origin (-50%~150%)</label>
+                   <ol id="origin-table2" class="selectable-wrap select-origin" style="color:white">
+                   </ol>
+                   <div style="clear:both"></div>
+                 </div>
+
+                 <div class="select">
+                   <label>position (-100%~100%)</label>
+                   <ol id="translate2" class="selectable-wrap select-translate" >
+                   </ol>
+                   <div style="clear:both"></div>                  
+                 </div>
+                 
+                 <div class="select">
+                   <label>scale</label>
+                   <select id="scale2" class="scale-select">
+                   </select>
+                 </div>
+                 
+                 <div class="select">
+                   <label>timing-funciton</label>
+                   <select id="transition-timing-function2" class="select-timing">
+                   </select>
+                 </div>
+                 <label>duration</label>
+                 <select id="transition-duration2" name="transition-duration" class="select-duration">
+                 </select>
+                 <label>delay</label>
+                 <select id="transition-delay2" name="transition-delay" class="select-delay">
+                 </select>
+
+               </div>
+
+               <div class="span2">
+                 <h3>out</h3>
+                 <div class="select">
+                   <label>rotate(deg)</label>
+                   <select id="rotate" class="select-rotate">
+                   </select>
+
+                   <label>origin (-50%~150%)</label>
+                   <ol id="origin-table" class="selectable-wrap select-origin" style="color:white" >
+                   </ol>
+                   <div style="clear:both"></div>
+                 </div>
+
+                 <div class="select">
+                   <label>position (-100%~100%)</label>
+                   <ol id="translate" class="selectable-wrap select-translate">
+                   </ol>
+                   <div style="clear:both"></div>                  
+                 </div>
+
+                 <div class="select">
+                   <label>scale</label>
+                   <select id="scale" class="scale-select">
+                   </select>
+                 </div>
+
+                 <div class="select">
+                   <label>timing-funciton</label>
+                   <select id="transition-timing-function" class="select-timing">
+                   </select>
+                 </div>
+
+                 <label>duration</label>
+                 <select id="transition-duration" name="transition-duration" class="select-duration">
+                 </select>
+
+                 <label>delay</label>
+                 <select id="transition-delay" name="transition-delay" class="select-delay">
+                 </select>
+ 
+               </div>
+
+               <div class="span4">
+                 <hr>
+                 <button id="makeButton" class="btn">makeStyle</button>
+                 <button id="applyButton" class="btn btn-primary">Apply</button>
+               </div>
+
+               <div style="clear:both"></div>
+             </form>
+           </div>
+
+           <div class="span7">
+
+             <ul id="select-animation" class="nav nav-pills">
+<!--                  generate html use javascript-->
+             </ul>
+             
+             <div class="transition-space-base">            
+               <div class="transition-space-wrap">
+                 <div class="transition-space">
+<!--                  generate html use javascript-->
+                 </div>
+               </div>
+             </div>
+             
+             <div style="padding-top:20px">
+             <h3>style</h3>
+             <textarea id="styleText" style="margin-top:10px;width:500px;height:250px;">
+             </textarea>
+             </div>
+          </div>
+        </div>
+      </div>
+      <footer class="footer">
+          <p>
+          created by hi104
+          </p>
+          <p></p>
+        </footer>              
+    </div>
+  </body>
+</html>
+
