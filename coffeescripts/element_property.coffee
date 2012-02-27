@@ -6,12 +6,14 @@ class Prop
         ret[@getPropName()] = @getValue()
         ret
     getValue : () -> @value
+    setValue : (val) -> @value = val
     toCss: () ->
         @getPropName()  + ":" +@getValue() + ";"
 
 class ElmStyleProp extends Prop
-    constructor: (@elm, @prop_name, @getfn) ->
+    constructor: (@elm, @prop_name, @getfn, @setfn) ->
     getValue : () -> @getfn($(@elm))
+    setValue : (val) -> @setfn($(@elm), val)
 
 class ElmTransProp extends ElmStyleProp
     toCss: () ->

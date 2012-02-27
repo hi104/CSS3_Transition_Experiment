@@ -25,6 +25,10 @@
       return this.value;
     };
 
+    Prop.prototype.setValue = function(val) {
+      return this.value = val;
+    };
+
     Prop.prototype.toCss = function() {
       return this.getPropName() + ":" + this.getValue() + ";";
     };
@@ -37,14 +41,19 @@
 
     __extends(ElmStyleProp, _super);
 
-    function ElmStyleProp(elm, prop_name, getfn) {
+    function ElmStyleProp(elm, prop_name, getfn, setfn) {
       this.elm = elm;
       this.prop_name = prop_name;
       this.getfn = getfn;
+      this.setfn = setfn;
     }
 
     ElmStyleProp.prototype.getValue = function() {
       return this.getfn($(this.elm));
+    };
+
+    ElmStyleProp.prototype.setValue = function(val) {
+      return this.setfn($(this.elm), val);
     };
 
     return ElmStyleProp;

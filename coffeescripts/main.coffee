@@ -6,18 +6,22 @@ TransFormProp  = exports.TransFormProp
 _.templateSettings = { interpolate: /\{\{(.+?)\}\}/g }
 
 class PropFactory
-    timing:     (selector) -> new ElmStyleProp(selector, "transition-timing-function", @getVal),
-    delay:      (selector) -> new ElmStyleProp(selector, "transition-delay", @getVal),
-    duration:   (selector) -> new ElmStyleProp(selector, "transition-duration", @getVal),
-    origin :    (selector) -> new ElmStyleProp(selector, "transform-origin", @getSelectData),
+    timing:     (selector) -> new ElmStyleProp(selector, "transition-timing-function", @getVal, @setVal),
+    delay:      (selector) -> new ElmStyleProp(selector, "transition-delay", @getVal, @setVal),
+    duration:   (selector) -> new ElmStyleProp(selector, "transition-duration", @getVal, @setVal),
+    origin :    (selector) -> new ElmStyleProp(selector, "transform-origin", @getSelectData, @setSelectData),
 
-    translate : (selector) -> new ElmTransProp(selector, "translate", @getSelectData),
-    rotate :    (selector) -> new ElmTransProp(selector, "rotate", (elm) -> elm.val() + "deg"),
-    scale :     (selector) -> new ElmTransProp(selector, "scale", @getVal)
+    translate : (selector) -> new ElmTransProp(selector, "translate", @getSelectData, @setSelectData),
+    rotate :    (selector) -> new ElmTransProp(selector, "rotate", @getVal, @setVal),
+    scale :     (selector) -> new ElmTransProp(selector, "scale", @getVal, @setVal)
 
     getSelectData   : (elm) -> elm.find('.ui-selected').first().attr("data")
+    setSelectData   : (elm, val) ->
+            elm.find(".ui-selected").removeClass("ui-selected")
+            data_selector = 'li[data="' + val + '"]'
+            elm.find(data_selector).addClass("ui-selected")
     getVal          : (elm) -> elm.val()
-
+    setVal          : (elm, val) -> elm.val(val)
 
 _fac = new PropFactory
 in_trans_prop =
@@ -30,7 +34,6 @@ in_trans_prop =
             _fac.rotate("#rotate2"),
             _fac.scale("#scale2")
     ], option:[new Prop("opacity", "0")]}
-
 
 current_trans_prop = {
     transition_prop:[
@@ -54,6 +57,7 @@ out_trans_prop =
             _fac.scale("#scale"),
     ], option:[new Prop("opacity", "0")]}
 
+exports.in_trans_prop = in_trans_prop
 vendor_prefixs = ["-webkit-", "-moz-", "-o-"]
 getTransProp = (prop) ->
     trans_props = new TransFormProp("transform", prop.anim_trans)
@@ -142,7 +146,7 @@ setSelectUi = () ->
   _.each(_.range(5,10), (e) -> scale_range.push(e * 10))
 
   _.each rotate_range, (e) ->
-    temp = _.template('<option value="{{val}}"> {{val}}</option>')
+    temp = _.template('<option value="{{val +"deg"}}"> {{val}}</option>')
     $(".select-rotate").append temp(val: e)
 
   _.each scale_range, (elm) ->
@@ -158,7 +162,7 @@ setSelectUi = () ->
 
   $(".select-duration").val("1s")
   $(".select-delay").val("0s")
-  $(".select-rotate").val("0")
+  $(".select-rotate").val("0deg")
   $(".scale-select").val("1, 1")
   $("#fade").val("on")
   _([".select-translate",

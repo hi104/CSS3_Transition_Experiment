@@ -18,41 +18,50 @@
     function PropFactory() {}
 
     PropFactory.prototype.timing = function(selector) {
-      return new ElmStyleProp(selector, "transition-timing-function", this.getVal);
+      return new ElmStyleProp(selector, "transition-timing-function", this.getVal, this.setVal);
     };
 
     PropFactory.prototype.delay = function(selector) {
-      return new ElmStyleProp(selector, "transition-delay", this.getVal);
+      return new ElmStyleProp(selector, "transition-delay", this.getVal, this.setVal);
     };
 
     PropFactory.prototype.duration = function(selector) {
-      return new ElmStyleProp(selector, "transition-duration", this.getVal);
+      return new ElmStyleProp(selector, "transition-duration", this.getVal, this.setVal);
     };
 
     PropFactory.prototype.origin = function(selector) {
-      return new ElmStyleProp(selector, "transform-origin", this.getSelectData);
+      return new ElmStyleProp(selector, "transform-origin", this.getSelectData, this.setSelectData);
     };
 
     PropFactory.prototype.translate = function(selector) {
-      return new ElmTransProp(selector, "translate", this.getSelectData);
+      return new ElmTransProp(selector, "translate", this.getSelectData, this.setSelectData);
     };
 
     PropFactory.prototype.rotate = function(selector) {
-      return new ElmTransProp(selector, "rotate", function(elm) {
-        return elm.val() + "deg";
-      });
+      return new ElmTransProp(selector, "rotate", this.getVal, this.setVal);
     };
 
     PropFactory.prototype.scale = function(selector) {
-      return new ElmTransProp(selector, "scale", this.getVal);
+      return new ElmTransProp(selector, "scale", this.getVal, this.setVal);
     };
 
     PropFactory.prototype.getSelectData = function(elm) {
       return elm.find('.ui-selected').first().attr("data");
     };
 
+    PropFactory.prototype.setSelectData = function(elm, val) {
+      var data_selector;
+      elm.find(".ui-selected").removeClass("ui-selected");
+      data_selector = 'li[data="' + val + '"]';
+      return elm.find(data_selector).addClass("ui-selected");
+    };
+
     PropFactory.prototype.getVal = function(elm) {
       return elm.val();
+    };
+
+    PropFactory.prototype.setVal = function(elm, val) {
+      return elm.val(val);
     };
 
     return PropFactory;
@@ -78,6 +87,8 @@
     anim_trans: [_fac.translate("#translate"), _fac.rotate("#rotate"), _fac.scale("#scale")],
     option: [new Prop("opacity", "0")]
   };
+
+  exports.in_trans_prop = in_trans_prop;
 
   vendor_prefixs = ["-webkit-", "-moz-", "-o-"];
 
@@ -200,7 +211,7 @@
     });
     _.each(rotate_range, function(e) {
       var temp;
-      temp = _.template('<option value="{{val}}"> {{val}}</option>');
+      temp = _.template('<option value="{{val +"deg"}}"> {{val}}</option>');
       return $(".select-rotate").append(temp({
         val: e
       }));
@@ -232,7 +243,7 @@
     });
     $(".select-duration").val("1s");
     $(".select-delay").val("0s");
-    $(".select-rotate").val("0");
+    $(".select-rotate").val("0deg");
     $(".scale-select").val("1, 1");
     $("#fade").val("on");
     return _([".select-translate", ".select-origin"]).each(function(selector) {
