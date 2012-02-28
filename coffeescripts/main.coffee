@@ -60,14 +60,17 @@ out_trans_prop =
 exports.in_trans_prop = in_trans_prop
 vendor_prefixs = ["-webkit-", "-moz-", "-o-"]
 getTransProp = (prop) ->
-    trans_props = new TransFormProp("transform", prop.anim_trans)
-    props = []
+    vender_props = []
+    _(prop.transition_prop).each (e) -> vender_props.push(e)
+    if prop.anim_trans.length > 0
+        vender_props.push(new TransFormProp("transform", prop.anim_trans))
+    css_props = []
     _(vendor_prefixs).each (prefix) ->
-        _(_.flatten([trans_props, prop.transition_prop])).each (e) ->
-             props.push(prefix + e.toCss())
+        _(vender_props).each (e) ->
+             css_props.push(prefix + e.toCss())
     _(prop.option).each (e) ->
-        props.push(e.toCss())
-    props
+        css_props.push(e.toCss())
+    css_props
 
 getStyle = (prop) ->
     getTransProp(prop).join("\n    ")

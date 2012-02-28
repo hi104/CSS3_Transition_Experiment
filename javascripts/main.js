@@ -93,18 +93,24 @@
   vendor_prefixs = ["-webkit-", "-moz-", "-o-"];
 
   getTransProp = function(prop) {
-    var props, trans_props;
-    trans_props = new TransFormProp("transform", prop.anim_trans);
-    props = [];
+    var css_props, vender_props;
+    vender_props = [];
+    _(prop.transition_prop).each(function(e) {
+      return vender_props.push(e);
+    });
+    if (prop.anim_trans.length > 0) {
+      vender_props.push(new TransFormProp("transform", prop.anim_trans));
+    }
+    css_props = [];
     _(vendor_prefixs).each(function(prefix) {
-      return _(_.flatten([trans_props, prop.transition_prop])).each(function(e) {
-        return props.push(prefix + e.toCss());
+      return _(vender_props).each(function(e) {
+        return css_props.push(prefix + e.toCss());
       });
     });
     _(prop.option).each(function(e) {
-      return props.push(e.toCss());
+      return css_props.push(e.toCss());
     });
-    return props;
+    return css_props;
   };
 
   getStyle = function(prop) {
