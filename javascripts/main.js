@@ -1,5 +1,5 @@
 (function() {
-  var ElmStyleProp, ElmTransProp, Prop, PropFactory, SelectMovePositions, SelectOriginPositions, TransFormProp, anim_elm_data, current_trans_prop, easing_table, generateSelectItem, generateTransitionItem, getStyle, getTransProp, in_trans_prop, make, makeCombination, origin_position_persent, out_trans_prop, position_persent, setSelectUi, vendor_prefixs, _fac;
+  var ApplicationData, ElmStyleProp, ElmTransProp, Prop, PropFactory, SelectMovePositions, SelectOriginPositions, TransFormProp, anim_elm_data, current_trans_prop, easing_table, generateSelectItem, generateTransitionItem, getStyle, getTransProp, in_trans_prop, make, makeCombination, origin_position_persent, out_trans_prop, position_persent, setSelectUi, vendor_prefixs, _fac;
 
   Prop = exports.Prop;
 
@@ -68,27 +68,129 @@
 
   })();
 
+  PropFactory.prototype.func_prop_map = {
+    "transition-timing-function": "timing",
+    "transition-delay": "delay",
+    "transition-duration": "duration",
+    "transform-origin": "origin",
+    "translate": "translate",
+    "rotate": "rotate",
+    "scale": "scale"
+  };
+
+  PropFactory.prototype.createFromDataObj = function(obj, factory) {
+    return factory[PropFactory.prototype.func_prop_map[obj.prop]](obj.selector);
+  };
+
+  this.TransitionSet = (function() {
+
+    function TransitionSet(props) {
+      this.transition_prop = props.transition_prop;
+      this.anim_trans = props.anim_trans;
+      this.option = props.option;
+    }
+
+    TransitionSet.prototype.toDataObj = function() {
+      var e, ret;
+      ret = {};
+      ret.anim_trans = (function() {
+        var _i, _len, _ref, _results;
+        _ref = this.anim_trans;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          e = _ref[_i];
+          _results.push(e.toDataObj());
+        }
+        return _results;
+      }).call(this);
+      ret.option = (function() {
+        var _i, _len, _ref, _results;
+        _ref = this.option;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          e = _ref[_i];
+          _results.push(e.toDataObj());
+        }
+        return _results;
+      }).call(this);
+      ret.transition_prop = (function() {
+        var _i, _len, _ref, _results;
+        _ref = this.transition_prop;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          e = _ref[_i];
+          _results.push(e.toDataObj());
+        }
+        return _results;
+      }).call(this);
+      return ret;
+    };
+
+    return TransitionSet;
+
+  })();
+
+  this.TransitionSet.prototype.restore = function(obj) {
+    return _(obj).each(function(v, k) {
+      var propdata, _i, _len, _results;
+      _results = [];
+      for (_i = 0, _len = v.length; _i < _len; _i++) {
+        propdata = v[_i];
+        _results.push((function(propdata) {
+          if (propdata.selector) {
+            return PropFactory.prototype.createFromDataObj(propdata, _fac).setValue(propdata.val);
+          }
+        })(propdata));
+      }
+      return _results;
+    });
+  };
+
+  ApplicationData = (function() {
+
+    function ApplicationData() {}
+
+    ApplicationData.prototype.getTransDataJson = function() {
+      return JSON.stringify({
+        in_trans_prop: in_trans_prop.toDataObj(),
+        current_trans_prop: current_trans_prop.toDataObj(),
+        out_trans_prop: out_trans_prop.toDataObj()
+      });
+    };
+
+    ApplicationData.prototype.loadTransDataJson = function(json) {
+      var obj;
+      obj = JSON.parse(json);
+      return _(obj).each(function(v, k) {
+        return this.TransitionSet.prototype.restore(v);
+      });
+    };
+
+    return ApplicationData;
+
+  })();
+
+  exports.appData = new ApplicationData();
+
   _fac = new PropFactory;
 
-  in_trans_prop = {
+  in_trans_prop = new TransitionSet({
     transition_prop: [_fac.origin("#origin-table2"), new Prop("transition-duration", "0s")],
     anim_trans: [_fac.translate("#translate2"), _fac.rotate("#rotate2"), _fac.scale("#scale2")],
     option: [new Prop("opacity", "0")]
-  };
+  });
 
-  current_trans_prop = {
+  current_trans_prop = new TransitionSet({
     transition_prop: [_fac.timing("#transition-timing-function2"), _fac.duration("#transition-duration2"), _fac.delay("#transition-delay2")],
     anim_trans: [],
     option: []
-  };
+  });
 
-  out_trans_prop = {
+  out_trans_prop = new TransitionSet({
     transition_prop: [_fac.origin("#origin-table"), _fac.timing("#transition-timing-function"), _fac.duration("#transition-duration"), _fac.delay("#transition-delay")],
     anim_trans: [_fac.translate("#translate"), _fac.rotate("#rotate"), _fac.scale("#scale")],
     option: [new Prop("opacity", "0")]
-  };
-
-  exports.in_trans_prop = in_trans_prop;
+  });
 
   vendor_prefixs = ["-webkit-", "-moz-", "-o-"];
 

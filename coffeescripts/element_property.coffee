@@ -9,11 +9,13 @@ class Prop
     setValue : (val) -> @value = val
     toCss: () ->
         @getPropName()  + ":" +@getValue() + ";"
+    toDataObj: () -> {selector:undefined,  prop:@getPropName(), val:@getValue()}
 
 class ElmStyleProp extends Prop
     constructor: (@elm, @prop_name, @getfn, @setfn) ->
     getValue : () -> @getfn($(@elm))
     setValue : (val) -> @setfn($(@elm), val)
+    toDataObj: () -> {selector:@elm ,prop:@getPropName(), val:@getValue()}
 
 class ElmTransProp extends ElmStyleProp
     toCss: () ->

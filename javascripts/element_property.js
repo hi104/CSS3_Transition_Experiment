@@ -33,6 +33,14 @@
       return this.getPropName() + ":" + this.getValue() + ";";
     };
 
+    Prop.prototype.toDataObj = function() {
+      return {
+        selector: void 0,
+        prop: this.getPropName(),
+        val: this.getValue()
+      };
+    };
+
     return Prop;
 
   })();
@@ -54,6 +62,14 @@
 
     ElmStyleProp.prototype.setValue = function(val) {
       return this.setfn($(this.elm), val);
+    };
+
+    ElmStyleProp.prototype.toDataObj = function() {
+      return {
+        selector: this.elm,
+        prop: this.getPropName(),
+        val: this.getValue()
+      };
     };
 
     return ElmStyleProp;

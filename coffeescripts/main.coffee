@@ -23,9 +23,56 @@ class PropFactory
     getVal          : (elm) -> elm.val()
     setVal          : (elm, val) -> elm.val(val)
 
+PropFactory::func_prop_map = {
+    "transition-timing-function" :    "timing",
+    "transition-delay"           :    "delay",
+    "transition-duration"        :    "duration",
+    "transform-origin"           :    "origin",
+    "translate"                  :    "translate",
+    "rotate"                     :    "rotate",
+    "scale"                      :    "scale"
+    }
+
+PropFactory::createFromDataObj = (obj, factory) ->
+    factory[PropFactory::func_prop_map[obj.prop]](obj.selector)
+
+class @TransitionSet
+    constructor: (props) ->
+        @transition_prop = props.transition_prop
+        @anim_trans = props.anim_trans
+        @option = props.option
+    toDataObj : () ->
+        ret = {}
+        ret.anim_trans = (e.toDataObj() for e in @anim_trans)
+        ret.option = (e.toDataObj() for e in @option)
+        ret.transition_prop = (e.toDataObj() for e in @transition_prop)
+        ret
+
+@TransitionSet::restore = (obj) ->
+    _(obj).each (v, k) ->
+        for propdata in v
+            do (propdata) ->
+                if propdata.selector
+                    PropFactory::createFromDataObj(propdata, _fac).setValue(propdata.val)
+
+class ApplicationData
+    getTransDataJson :()->
+        JSON.stringify({
+            in_trans_prop: in_trans_prop.toDataObj(),
+            current_trans_prop: current_trans_prop.toDataObj(),
+            out_trans_prop: out_trans_prop.toDataObj()
+        })
+    loadTransDataJson: (json) ->
+        obj = JSON.parse(json)
+        _(obj).each (v, k) ->
+                @TransitionSet::restore(v)
+
+exports.appData = new ApplicationData()
+
 _fac = new PropFactory
-in_trans_prop =
-    { transition_prop:[
+
+in_trans_prop = new TransitionSet({
+    transition_prop:[
             _fac.origin("#origin-table2"),
             new Prop("transition-duration", "0s")
         ],
@@ -33,18 +80,18 @@ in_trans_prop =
             _fac.translate("#translate2"),
             _fac.rotate("#rotate2"),
             _fac.scale("#scale2")
-    ], option:[new Prop("opacity", "0")]}
+    ], option:[new Prop("opacity", "0")]})
 
-current_trans_prop = {
+current_trans_prop = new TransitionSet({
     transition_prop:[
             _fac.timing("#transition-timing-function2"),
             _fac.duration("#transition-duration2"),
             _fac.delay("#transition-delay2")
     ],
     anim_trans:[],
-    option:[]}
+    option:[]})
 
-out_trans_prop =
+out_trans_prop =new TransitionSet(
     { transition_prop:[
             _fac.origin("#origin-table"),
             _fac.timing("#transition-timing-function"),
@@ -55,9 +102,8 @@ out_trans_prop =
             _fac.translate("#translate"),
             _fac.rotate("#rotate"),
             _fac.scale("#scale"),
-    ], option:[new Prop("opacity", "0")]}
+    ], option:[new Prop("opacity", "0")]})
 
-exports.in_trans_prop = in_trans_prop
 vendor_prefixs = ["-webkit-", "-moz-", "-o-"]
 getTransProp = (prop) ->
     vender_props = []
