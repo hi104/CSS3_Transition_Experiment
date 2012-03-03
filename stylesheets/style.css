@@ -30,6 +30,7 @@ select {
 .selectable-wrap li { margin: 2px; padding: 1px; float: left; width: 20px; height: 20px; text-align: center; background:white}
 
 #select-animation {
+    margin-top:10px;
     }
 #select-animation li{
     margin-right:8px;

@@ -63,7 +63,10 @@
        <div class="content">
          <div class="row">
            <div class="span5">
-             <form class="well"> 
+             <form class="well">
+               <div class="span4">
+                 <h2>1. Setting</h2>
+               </div>
                <div class="span2">
                  <h3>in</h3>
                  <div class="select">
@@ -147,17 +150,21 @@
                </div>
 
                <div class="span4">
-                 <hr>
-                 <button id="makeButton" class="btn">makeStyle</button>
-                 <button id="applyButton" class="btn btn-primary">Apply</button>
+                 <h2>2. Apply</h2>
+                 <div style="padding-top:10px">
+                   <button id="makeButton" class="btn">1.makeStyle</button> >> 
+                   <button id="applyButton" class="btn btn-primary">2.Apply</button>
+                 </div>
+
                </div>
 
                <div style="clear:both"></div>
              </form>
            </div>
 
-           <div class="span7">
-
+           <div class="span7" >
+             <h2>3. Click item (start Transition!)</h2>
+             
              <ul id="select-animation" class="nav nav-pills">
 <!--                  generate html use javascript-->
              </ul>
@@ -169,7 +176,7 @@
                  </div>
                </div>
              </div>
-             
+
              <div style="padding-top:20px">
              <h3>style</h3>
              <textarea id="styleText" style="margin-top:10px;width:500px;height:250px;">
