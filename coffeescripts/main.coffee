@@ -80,7 +80,8 @@ in_trans_prop = new TransitionSet({
             _fac.translate("#translate2"),
             _fac.rotate("#rotate2"),
             _fac.scale("#scale2")
-    ], option:[new Prop("opacity", "0")]})
+    ], option:[new Prop("opacity", "0"),
+               new Prop("z-index", "1000")]})
 
 current_trans_prop = new TransitionSet({
     transition_prop:[
@@ -89,7 +90,7 @@ current_trans_prop = new TransitionSet({
             _fac.delay("#transition-delay2")
     ],
     anim_trans:[],
-    option:[]})
+    option:[new Prop("z-index", "1000")]})
 
 out_trans_prop =new TransitionSet(
     { transition_prop:[
@@ -102,7 +103,8 @@ out_trans_prop =new TransitionSet(
             _fac.translate("#translate"),
             _fac.rotate("#rotate"),
             _fac.scale("#scale"),
-    ], option:[new Prop("opacity", "0")]})
+    ], option:[new Prop("opacity", "0"),
+               new Prop("z-index", "1000")]})
 
 vendor_prefixs = ["-webkit-", "-moz-", "-o-"]
 getTransProp = (prop) ->
