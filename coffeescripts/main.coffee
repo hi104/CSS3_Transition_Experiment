@@ -219,8 +219,36 @@ setSelectUi = () ->
         _($(selector)).each (e) ->
             $($(e).children()[12]).addClass("ui-selected")
 
+setSampleDataUi = () ->
+    select = $("#select-sample")
+    templi = _.template("<li><a href='#' data='{{name}}'>{{name}}</a></li>")
+    for name, json of exports.sampleData
+        select.append(templi({name:name}))
+
+    $("#select-sample a").click((e) ->
+        e.preventDefault()
+        key = $(this).attr("data")
+        exports.appData.loadTransDataJson(exports.sampleData[key])
+        makeStyle()
+        applyStyle())
+
+makeStyle = () ->
+    css = new CssUtil()
+    selector = (e) -> ".transition-space " + e + " .transition-item"
+    in_style = css.makeStyleRule(selector(".in"), getStyle(in_trans_prop))
+    out_style = css.makeStyleRule(selector(".out"), getStyle(out_trans_prop))
+    current_style = css.makeStyleRule(selector(".current"), getStyle(current_trans_prop))
+    $("#styleText").val(in_style + out_style + current_style)
+
+applyStyle = () ->
+    selected_anim_id = undefined
+    $(".transition-wrap").removeClass("current").removeClass("out").addClass("in")
+    css = new CssUtil()
+    css.putCSSRule("animate-style", $("#styleText").val())
+
 $(document).ready ->
   setSelectUi()
+  setSampleDataUi()
   selected_anim_id = undefined
 
   $("#select-animation li div").click (e) ->
@@ -240,20 +268,11 @@ $(document).ready ->
 
   $("#makeButton").click (e) ->
     e.preventDefault();
-    css = new CssUtil()
-    selector = (e) -> ".transition-space " + e + " .transition-item"
-    in_style = css.makeStyleRule(selector(".in"), getStyle(in_trans_prop))
-    out_style = css.makeStyleRule(selector(".out"), getStyle(out_trans_prop))
-    current_style = css.makeStyleRule(selector(".current"), getStyle(current_trans_prop))
-    $("#styleText").val(in_style + out_style + current_style)
+    makeStyle()
 
   $("#applyButton").click (e) ->
-    selected_anim_id = undefined
-    $(".transition-wrap").removeClass("current").removeClass("out").addClass("in")
     e.preventDefault();
-    css = new CssUtil()
-    css.deleteRule("animate-style")
-    css.putCSSRule("animate-style", $("#styleText").val())
+    applyStyle()
 
 
 

@@ -1,5 +1,5 @@
 (function() {
-  var ApplicationData, ElmStyleProp, ElmTransProp, Prop, PropFactory, SelectMovePositions, SelectOriginPositions, TransFormProp, anim_elm_data, current_trans_prop, easing_table, generateSelectItem, generateTransitionItem, getStyle, getTransProp, in_trans_prop, make, makeCombination, origin_position_persent, out_trans_prop, position_persent, setSelectUi, vendor_prefixs, _fac;
+  var ApplicationData, ElmStyleProp, ElmTransProp, Prop, PropFactory, SelectMovePositions, SelectOriginPositions, TransFormProp, anim_elm_data, applyStyle, current_trans_prop, easing_table, generateSelectItem, generateTransitionItem, getStyle, getTransProp, in_trans_prop, make, makeCombination, makeStyle, origin_position_persent, out_trans_prop, position_persent, setSampleDataUi, setSelectUi, vendor_prefixs, _fac;
 
   Prop = exports.Prop;
 
@@ -361,9 +361,51 @@
     });
   };
 
+  setSampleDataUi = function() {
+    var json, name, select, templi, _ref;
+    select = $("#select-sample");
+    templi = _.template("<li><a href='#' data='{{name}}'>{{name}}</a></li>");
+    _ref = exports.sampleData;
+    for (name in _ref) {
+      json = _ref[name];
+      select.append(templi({
+        name: name
+      }));
+    }
+    return $("#select-sample a").click(function(e) {
+      var key;
+      e.preventDefault();
+      key = $(this).attr("data");
+      exports.appData.loadTransDataJson(exports.sampleData[key]);
+      makeStyle();
+      return applyStyle();
+    });
+  };
+
+  makeStyle = function() {
+    var css, current_style, in_style, out_style, selector;
+    css = new CssUtil();
+    selector = function(e) {
+      return ".transition-space " + e + " .transition-item";
+    };
+    in_style = css.makeStyleRule(selector(".in"), getStyle(in_trans_prop));
+    out_style = css.makeStyleRule(selector(".out"), getStyle(out_trans_prop));
+    current_style = css.makeStyleRule(selector(".current"), getStyle(current_trans_prop));
+    return $("#styleText").val(in_style + out_style + current_style);
+  };
+
+  applyStyle = function() {
+    var css, selected_anim_id;
+    selected_anim_id = void 0;
+    $(".transition-wrap").removeClass("current").removeClass("out").addClass("in");
+    css = new CssUtil();
+    return css.putCSSRule("animate-style", $("#styleText").val());
+  };
+
   $(document).ready(function() {
     var selected_anim_id;
     setSelectUi();
+    setSampleDataUi();
     selected_anim_id = void 0;
     $("#select-animation li div").click(function(e) {
       var anim_id;
@@ -382,25 +424,12 @@
       }, 1);
     });
     $("#makeButton").click(function(e) {
-      var css, current_style, in_style, out_style, selector;
       e.preventDefault();
-      css = new CssUtil();
-      selector = function(e) {
-        return ".transition-space " + e + " .transition-item";
-      };
-      in_style = css.makeStyleRule(selector(".in"), getStyle(in_trans_prop));
-      out_style = css.makeStyleRule(selector(".out"), getStyle(out_trans_prop));
-      current_style = css.makeStyleRule(selector(".current"), getStyle(current_trans_prop));
-      return $("#styleText").val(in_style + out_style + current_style);
+      return makeStyle();
     });
     return $("#applyButton").click(function(e) {
-      var css;
-      selected_anim_id = void 0;
-      $(".transition-wrap").removeClass("current").removeClass("out").addClass("in");
       e.preventDefault();
-      css = new CssUtil();
-      css.deleteRule("animate-style");
-      return css.putCSSRule("animate-style", $("#styleText").val());
+      return applyStyle();
     });
   });
 
