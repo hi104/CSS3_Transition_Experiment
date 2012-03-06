@@ -221,7 +221,6 @@ setSelectUi = () ->
         _($(selector)).each (e) ->
             $($(e).children()[12]).addClass("ui-selected")
 
-
 selected_anim_id = undefined
 
 setSampleDataUi = () ->
@@ -233,11 +232,14 @@ setSampleDataUi = () ->
     $("#select-sample a").click((e) ->
         e.preventDefault()
         key = $(this).attr("data")
-        exports.appData.loadTransDataJson(exports.sampleData[key])
-        makeStyle()
-        applyStyle()
-        selectItem("#anim1")
+        loadSampleData(key)
     )
+
+loadSampleData = (key) ->
+    exports.appData.loadTransDataJson(exports.sampleData[key])
+    makeStyle()
+    applyStyle()
+    selectItem("#anim1")
 
 makeStyle = () ->
     css = new CssUtil()
@@ -283,6 +285,7 @@ $(document).ready ->
     e.preventDefault();
     applyStyle()
     selectItem("#anim1")
+  loadSampleData("crossFade")
 
 #Copy From Move.js https://github.com/visionmedia/move.js
 easing_table =

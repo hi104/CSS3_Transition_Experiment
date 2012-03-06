@@ -1,5 +1,5 @@
 (function() {
-  var ApplicationData, ElmStyleProp, ElmTransProp, Prop, PropFactory, SelectMovePositions, SelectOriginPositions, TransFormProp, anim_elm_data, applyStyle, current_trans_prop, easing_table, generateSelectItem, generateTransitionItem, getStyle, getTransProp, in_trans_prop, make, makeCombination, makeStyle, origin_position_persent, out_trans_prop, position_persent, selectItem, selected_anim_id, setSampleDataUi, setSelectUi, vendor_prefixs, _fac;
+  var ApplicationData, ElmStyleProp, ElmTransProp, Prop, PropFactory, SelectMovePositions, SelectOriginPositions, TransFormProp, anim_elm_data, applyStyle, current_trans_prop, easing_table, generateSelectItem, generateTransitionItem, getStyle, getTransProp, in_trans_prop, loadSampleData, make, makeCombination, makeStyle, origin_position_persent, out_trans_prop, position_persent, selectItem, selected_anim_id, setSampleDataUi, setSelectUi, vendor_prefixs, _fac;
 
   Prop = exports.Prop;
 
@@ -378,11 +378,15 @@
       var key;
       e.preventDefault();
       key = $(this).attr("data");
-      exports.appData.loadTransDataJson(exports.sampleData[key]);
-      makeStyle();
-      applyStyle();
-      return selectItem("#anim1");
+      return loadSampleData(key);
     });
+  };
+
+  loadSampleData = function(key) {
+    exports.appData.loadTransDataJson(exports.sampleData[key]);
+    makeStyle();
+    applyStyle();
+    return selectItem("#anim1");
   };
 
   makeStyle = function() {
@@ -432,11 +436,12 @@
       e.preventDefault();
       return makeStyle();
     });
-    return $("#applyButton").click(function(e) {
+    $("#applyButton").click(function(e) {
       e.preventDefault();
       applyStyle();
       return selectItem("#anim1");
     });
+    return loadSampleData("crossFade");
   });
 
   easing_table = {
