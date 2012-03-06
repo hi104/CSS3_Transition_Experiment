@@ -221,6 +221,9 @@ setSelectUi = () ->
         _($(selector)).each (e) ->
             $($(e).children()[12]).addClass("ui-selected")
 
+
+selected_anim_id = undefined
+
 setSampleDataUi = () ->
     select = $("#select-sample")
     templi = _.template("<li><a href='#' data='{{name}}'>{{name}}</a></li>")
@@ -232,7 +235,9 @@ setSampleDataUi = () ->
         key = $(this).attr("data")
         exports.appData.loadTransDataJson(exports.sampleData[key])
         makeStyle()
-        applyStyle())
+        applyStyle()
+        selectItem("#anim1")
+    )
 
 makeStyle = () ->
     css = new CssUtil()
@@ -248,14 +253,8 @@ applyStyle = () ->
     css = new CssUtil()
     css.putCSSRule("animate-style", $("#styleText").val())
 
-$(document).ready ->
-  setSelectUi()
-  setSampleDataUi()
-  selected_anim_id = undefined
-
-  $("#select-animation li div").click (e) ->
-    anim_id = "#" + $(this).attr("value")
-    if selected_anim_id == anim_id
+selectItem = (anim_id) ->
+    if (selected_anim_id != undefined && selected_anim_id == anim_id)
        return
     if selected_anim_id
         $(".out").addClass("in")
@@ -268,6 +267,14 @@ $(document).ready ->
         selected_anim_id = anim_id
     , 1)
 
+$(document).ready ->
+  setSelectUi()
+  setSampleDataUi()
+
+  $("#select-animation li div").click (e) ->
+    anim_id = "#" + $(this).attr("value")
+    selectItem(anim_id)
+
   $("#makeButton").click (e) ->
     e.preventDefault();
     makeStyle()
@@ -275,8 +282,7 @@ $(document).ready ->
   $("#applyButton").click (e) ->
     e.preventDefault();
     applyStyle()
-
-
+    selectItem("#anim1")
 
 #Copy From Move.js https://github.com/visionmedia/move.js
 easing_table =

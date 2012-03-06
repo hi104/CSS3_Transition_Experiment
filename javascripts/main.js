@@ -1,5 +1,5 @@
 (function() {
-  var ApplicationData, ElmStyleProp, ElmTransProp, Prop, PropFactory, SelectMovePositions, SelectOriginPositions, TransFormProp, anim_elm_data, applyStyle, current_trans_prop, easing_table, generateSelectItem, generateTransitionItem, getStyle, getTransProp, in_trans_prop, make, makeCombination, makeStyle, origin_position_persent, out_trans_prop, position_persent, setSampleDataUi, setSelectUi, vendor_prefixs, _fac;
+  var ApplicationData, ElmStyleProp, ElmTransProp, Prop, PropFactory, SelectMovePositions, SelectOriginPositions, TransFormProp, anim_elm_data, applyStyle, current_trans_prop, easing_table, generateSelectItem, generateTransitionItem, getStyle, getTransProp, in_trans_prop, make, makeCombination, makeStyle, origin_position_persent, out_trans_prop, position_persent, selectItem, selected_anim_id, setSampleDataUi, setSelectUi, vendor_prefixs, _fac;
 
   Prop = exports.Prop;
 
@@ -361,6 +361,8 @@
     });
   };
 
+  selected_anim_id = void 0;
+
   setSampleDataUi = function() {
     var json, name, select, templi, _ref;
     select = $("#select-sample");
@@ -378,7 +380,8 @@
       key = $(this).attr("data");
       exports.appData.loadTransDataJson(exports.sampleData[key]);
       makeStyle();
-      return applyStyle();
+      applyStyle();
+      return selectItem("#anim1");
     });
   };
 
@@ -395,33 +398,35 @@
   };
 
   applyStyle = function() {
-    var css, selected_anim_id;
+    var css;
     selected_anim_id = void 0;
     $(".transition-wrap").removeClass("current").removeClass("out").addClass("in");
     css = new CssUtil();
     return css.putCSSRule("animate-style", $("#styleText").val());
   };
 
+  selectItem = function(anim_id) {
+    if (selected_anim_id !== void 0 && selected_anim_id === anim_id) return;
+    if (selected_anim_id) {
+      $(".out").addClass("in");
+      $(".out").removeClass("out");
+      $(selected_anim_id).removeClass("current");
+      $(selected_anim_id).addClass("out");
+    }
+    return setTimeout(function() {
+      $(anim_id).removeClass("in");
+      $(anim_id).addClass("current");
+      return selected_anim_id = anim_id;
+    }, 1);
+  };
+
   $(document).ready(function() {
-    var selected_anim_id;
     setSelectUi();
     setSampleDataUi();
-    selected_anim_id = void 0;
     $("#select-animation li div").click(function(e) {
       var anim_id;
       anim_id = "#" + $(this).attr("value");
-      if (selected_anim_id === anim_id) return;
-      if (selected_anim_id) {
-        $(".out").addClass("in");
-        $(".out").removeClass("out");
-        $(selected_anim_id).removeClass("current");
-        $(selected_anim_id).addClass("out");
-      }
-      return setTimeout(function() {
-        $(anim_id).removeClass("in");
-        $(anim_id).addClass("current");
-        return selected_anim_id = anim_id;
-      }, 1);
+      return selectItem(anim_id);
     });
     $("#makeButton").click(function(e) {
       e.preventDefault();
@@ -429,7 +434,8 @@
     });
     return $("#applyButton").click(function(e) {
       e.preventDefault();
-      return applyStyle();
+      applyStyle();
+      return selectItem("#anim1");
     });
   });
 
