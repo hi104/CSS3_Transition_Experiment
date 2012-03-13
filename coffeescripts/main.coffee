@@ -69,40 +69,40 @@ class ApplicationData
 
 exports.appData = new ApplicationData()
 
-_fac = new PropFactory
+pfc = new PropFactory
 
 in_trans_prop = new TransitionSet({
     transition_prop:[
-            _fac.origin("#origin-table2"),
+            pfc.origin("#origin-table2"),
             new Prop("transition-duration", "0s")
         ],
         anim_trans:[
-            _fac.translate("#translate2"),
-            _fac.rotate("#rotate2"),
-            _fac.scale("#scale2")
+            pfc.translate("#translate2"),
+            pfc.rotate("#rotate2"),
+            pfc.scale("#scale2")
     ], option:[new Prop("opacity", "0"),
                new Prop("z-index", "1000")]})
 
 current_trans_prop = new TransitionSet({
     transition_prop:[
-            _fac.timing("#transition-timing-function2"),
-            _fac.duration("#transition-duration2"),
-            _fac.delay("#transition-delay2")
+            pfc.timing("#transition-timing-function2"),
+            pfc.duration("#transition-duration2"),
+            pfc.delay("#transition-delay2")
     ],
     anim_trans:[],
     option:[new Prop("z-index", "1000")]})
 
 out_trans_prop =new TransitionSet(
     { transition_prop:[
-            _fac.origin("#origin-table"),
-            _fac.timing("#transition-timing-function"),
-            _fac.duration("#transition-duration"),
-            _fac.delay("#transition-delay")
+            pfc.origin("#origin-table"),
+            pfc.timing("#transition-timing-function"),
+            pfc.duration("#transition-duration"),
+            pfc.delay("#transition-delay")
         ],
         anim_trans:[
-            _fac.translate("#translate"),
-            _fac.rotate("#rotate"),
-            _fac.scale("#scale"),
+            pfc.translate("#translate"),
+            pfc.rotate("#rotate"),
+            pfc.scale("#scale"),
     ], option:[new Prop("opacity", "0"),
                new Prop("z-index", "1000")]})
 
