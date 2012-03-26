@@ -53,7 +53,7 @@ class @TransitionSet
         for propdata in v
             do (propdata) ->
                 if propdata.selector
-                    PropFactory::createFromDataObj(propdata, _fac).setValue(propdata.val)
+                    PropFactory::createFromDataObj(propdata, pfc).setValue(propdata.val)
 
 class ApplicationData
     getTransDataJson :()->
@@ -73,36 +73,36 @@ pfc = new PropFactory
 
 in_trans_prop = new TransitionSet({
     transition_prop:[
-            pfc.origin("#origin-table2"),
+            pfc.origin("#in-origin-table"),
             new Prop("transition-duration", "0s")
         ],
         anim_trans:[
-            pfc.translate("#translate2"),
-            pfc.rotate("#rotate2"),
-            pfc.scale("#scale2")
+            pfc.translate("#in-translate"),
+            pfc.rotate("#in-rotate"),
+            pfc.scale("#in-scale")
     ], option:[new Prop("opacity", "0"),
                new Prop("z-index", "1000")]})
 
 current_trans_prop = new TransitionSet({
     transition_prop:[
-            pfc.timing("#transition-timing-function2"),
-            pfc.duration("#transition-duration2"),
-            pfc.delay("#transition-delay2")
+            pfc.timing("#in-transition-timing-function"),
+            pfc.duration("#in-transition-duration"),
+            pfc.delay("#in-transition-delay")
     ],
     anim_trans:[],
     option:[new Prop("z-index", "1000")]})
 
 out_trans_prop =new TransitionSet(
     { transition_prop:[
-            pfc.origin("#origin-table"),
-            pfc.timing("#transition-timing-function"),
-            pfc.duration("#transition-duration"),
-            pfc.delay("#transition-delay")
+            pfc.origin("#out-origin-table"),
+            pfc.timing("#out-transition-timing-function"),
+            pfc.duration("#out-transition-duration"),
+            pfc.delay("#out-transition-delay")
         ],
         anim_trans:[
-            pfc.translate("#translate"),
-            pfc.rotate("#rotate"),
-            pfc.scale("#scale"),
+            pfc.translate("#out-translate"),
+            pfc.rotate("#out-rotate"),
+            pfc.scale("#out-scale"),
     ], option:[new Prop("opacity", "0"),
                new Prop("z-index", "1000")]})
 
