@@ -1,5 +1,5 @@
 (function() {
-  var ApplicationData, ElmStyleProp, ElmTransProp, Prop, PropFactory, SelectMovePositions, SelectOriginPositions, TransFormProp, anim_elm_data, applyStyle, current_trans_prop, easing_table, generateSelectItem, generateTransitionItem, getStyle, getTransProp, in_trans_prop, loadSampleData, make, makeCombination, makeStyle, origin_position_persent, out_trans_prop, position_persent, selectItem, selected_anim_id, setSampleDataUi, setSelectUi, vendor_prefixs, _fac;
+  var ApplicationData, ElmStyleProp, ElmTransProp, Prop, PropFactory, SelectMovePositions, SelectOriginPositions, TransFormProp, anim_elm_data, applyStyle, current_trans_prop, easing_table, generateSelectItem, generateTransitionItem, getStyle, getTransProp, in_trans_prop, loadSampleData, make, makeCombination, makeStyle, origin_position_persent, out_trans_prop, pfc, position_persent, selectItem, selected_anim_id, setSampleDataUi, setSelectUi, vendor_prefixs;
 
   Prop = exports.Prop;
 
@@ -138,7 +138,7 @@
         propdata = v[_i];
         _results.push((function(propdata) {
           if (propdata.selector) {
-            return PropFactory.prototype.createFromDataObj(propdata, _fac).setValue(propdata.val);
+            return PropFactory.prototype.createFromDataObj(propdata, pfc).setValue(propdata.val);
           }
         })(propdata));
       }
@@ -172,23 +172,23 @@
 
   exports.appData = new ApplicationData();
 
-  _fac = new PropFactory;
+  pfc = new PropFactory;
 
   in_trans_prop = new TransitionSet({
-    transition_prop: [_fac.origin("#origin-table2"), new Prop("transition-duration", "0s")],
-    anim_trans: [_fac.translate("#translate2"), _fac.rotate("#rotate2"), _fac.scale("#scale2")],
+    transition_prop: [pfc.origin("#in-origin-table"), new Prop("transition-duration", "0s")],
+    anim_trans: [pfc.translate("#in-translate"), pfc.rotate("#in-rotate"), pfc.scale("#in-scale")],
     option: [new Prop("opacity", "0"), new Prop("z-index", "1000")]
   });
 
   current_trans_prop = new TransitionSet({
-    transition_prop: [_fac.timing("#transition-timing-function2"), _fac.duration("#transition-duration2"), _fac.delay("#transition-delay2")],
+    transition_prop: [pfc.timing("#in-transition-timing-function"), pfc.duration("#in-transition-duration"), pfc.delay("#in-transition-delay")],
     anim_trans: [],
     option: [new Prop("z-index", "1000")]
   });
 
   out_trans_prop = new TransitionSet({
-    transition_prop: [_fac.origin("#origin-table"), _fac.timing("#transition-timing-function"), _fac.duration("#transition-duration"), _fac.delay("#transition-delay")],
-    anim_trans: [_fac.translate("#translate"), _fac.rotate("#rotate"), _fac.scale("#scale")],
+    transition_prop: [pfc.origin("#out-origin-table"), pfc.timing("#out-transition-timing-function"), pfc.duration("#out-transition-duration"), pfc.delay("#out-transition-delay")],
+    anim_trans: [pfc.translate("#out-translate"), pfc.rotate("#out-rotate"), pfc.scale("#out-scale")],
     option: [new Prop("opacity", "0"), new Prop("z-index", "1000")]
   });
 
